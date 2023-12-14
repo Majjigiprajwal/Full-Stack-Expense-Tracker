@@ -1,8 +1,8 @@
 import React from 'react'
 import Money from '../../assets/money.png'
 
-const Transactions = ({data}) => {
-  const {description,amount,date,transactionType,category} = data
+const Transactions = ({data,handleDelete}) => {
+  const {description,amount,date,transactionType,category,id} = data
   return (
     <div className="flex bg-black rounded-lg w-3/5 mt-1">
        <div className="bg-slate-800 rounded-full p-1 m-3 flex justify-center items-center">
@@ -48,6 +48,7 @@ const Transactions = ({data}) => {
           className="hover:scale-110"
           viewBox="0 0 20 20"
           fill="currentColor"
+          onClick={()=>{handleDelete(id,amount,transactionType)}}
         >
           <path
             fillRule="evenodd"

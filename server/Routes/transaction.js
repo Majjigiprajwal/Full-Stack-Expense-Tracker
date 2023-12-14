@@ -10,5 +10,7 @@ router.post('/add-transaction',isAuth,transactionController.addTransaction)
 
 router.get('/transactions',isAuth,transactionController.getTransactions)
 
+router.delete('/deleteTransaction/:id',isAuth,transactionController.deleteTransaction)
+
 module.exports = router;
 

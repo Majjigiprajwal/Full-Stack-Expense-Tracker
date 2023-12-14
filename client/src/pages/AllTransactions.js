@@ -27,7 +27,23 @@ const AllTransactions = () => {
     }
     fetchData()
     
-  },[])
+  },[token])
+
+    const deleteTransaction = async (transactionId,amount,type)=>{
+      console.log(transactionId)
+        try{
+           await axios.delete(`http://localhost:4000/deleteTransaction/${transactionId}?amount=${amount}&type=${type}`,{
+            headers : {
+              'Authorization' : `Bearer ${token}`
+            }
+           })
+           const updatedTransaction = transactions.filter((transaction)=>transaction.id!==transactionId)
+           setTransactions(()=>updatedTransaction)
+        }
+        catch(error){
+
+        }
+    }
   
    
   return (
@@ -38,7 +54,7 @@ const AllTransactions = () => {
       <div className="w-full h-full mt-5 flex flex-col justify-center items-center">
        {
         transactions.map((transaction)=>{
-          return <Transactions key={transaction.id} data={transaction} />
+          return <Transactions key={transaction.id} data={transaction} handleDelete={deleteTransaction} />
         })
        }
        

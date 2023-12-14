@@ -44,3 +44,35 @@ exports.getTransactions = async (req,res,next)=>{
      return res.status(500).json({Success:false,message:"Failed to fetch the data please try after sometime"})
     }
 }
+
+exports.deleteTransaction = async (req,res,next)=>{
+       const id = req.params.id
+       const amount = req.query.amount
+       const transactionType = req.query.type
+       const user = req.user
+       let t;
+    try{
+        t = await sequelise.transaction()
+        const response = await Transaction.destroy({where:{id : id}},{transaction :t})
+        console.log(response);
+        if(transactionType === 'expense'){
+            const balance = Number(user.balance)+Number(amount);
+            const totalExpense = Number(user.totalExpense)-Number(amount)
+            await user.update({totalExpense:totalExpense,balance:balance}, { transaction: t })
+            await t.commit();
+            return res.status(201).json({success:true,message:'Deleted the transaction successfully'})
+        }
+        else{
+            const balance = Number(user.balance)-Number(amount);
+            const totalIncome = Number(user.totalIncome)-Number(amount)
+            await user.update({totalIncome:totalIncome,balance:balance}, { transaction: t })
+            await t.commit();
+            return res.status(201).json({success:true,message:'Deleted the transaction successfully'})
+        }
+    }
+    catch(error){
+          await t.rollback()
+          return res.status(500).json({success:false,message:'Please try after sometime'})
+
+    }
+}
