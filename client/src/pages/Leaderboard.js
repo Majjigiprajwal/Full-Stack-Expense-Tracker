@@ -11,6 +11,7 @@ const Leaderboard = () => {
     useEffect(()=>{
           const fetchLeaderboard = async ()=>{
               const {data :{data}} = await axios.get('http://localhost:4000/leaderboard')
+
               setLeaderboard(()=>data)
           }
           fetchLeaderboard()
@@ -22,6 +23,9 @@ const Leaderboard = () => {
       <Sidebar />
     </div>
     <div className="w-full h-full mt-5 flex flex-col justify-center items-center">
+    <div className="text-4xl flex justify-center  text-yellow-300 m-2">
+        <h1>LEADERBOARD</h1>
+    </div>
         {
           leaderboard && leaderboard.map((member,index)=>{
                 return <LeaderboardCard data={member} index={index} />

@@ -5,15 +5,12 @@ const LeaderboardCard = (props) => {
     const {data,index} = props
   return (
     <>
-    <div className="text-4xl flex justify-center  text-yellow-300 m-2">
-        <h1>LEADERBOARD</h1>
-    </div>
     <div className="flex bg-black rounded-lg w-3/5 mt-1">
-    <div className="bg-white rounded-full w-11  mt-5 mb-5 ml-3 mr-5 flex justify-center items-center text-3xl font-medium text-red-500">
+    <div className="bg-white rounded-full w-11  mt-3 mb-3 ml-6 mr-6 flex justify-center items-center text-3xl font-medium text-red-500">
      {index+1}
     </div>
     <div className=" m-2 w-3/5 flex  items-center ">
-     <div className="text-red-500  mt-2 text-2xl  font-medium overflow-hidden">
+     <div className="text-red-500  m-2 text-2xl  font-medium overflow-hidden">
          {data.name}
      </div>
     </div>
