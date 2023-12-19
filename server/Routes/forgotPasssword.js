@@ -7,4 +7,6 @@ const forgotPasswordcontroller = require('../Controller/forgotPassword')
 
 router.post('/forgotPassword',forgotPasswordcontroller.sendEmail)
 
+router.post('/resetPassword',forgotPasswordcontroller.resetPassword)
+
 module.exports = router;
