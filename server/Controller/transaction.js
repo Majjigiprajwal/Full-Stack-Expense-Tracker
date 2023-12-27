@@ -35,7 +35,7 @@ exports.addTransaction = async (req,res,next)=>{
 exports.getTransactions = async (req,res,next)=>{
     const user = req.user
     const page = Number(req.query.page)
-    const limit = 6;
+    const limit = Number(req.query.limit);
     try{
       let count = await user.countTransactions()
       let data = await user.getTransactions({

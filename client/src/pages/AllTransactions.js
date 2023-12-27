@@ -14,15 +14,22 @@ const AllTransactions = () => {
   const [hasPrevious,setHasPrevious] = useState(false)
   const [hasNext,setHasNext] = useState(false)
   const [totalPages,setTotalPages] = useState(null)
+  const [itemsPerPage,setItemsPerpage] = useState(null)
 
 
   const token = JSON.parse(localStorage.getItem('token'));
 
   useEffect(()=>{
-     
+    setItemsPerpage(()=>Number(JSON.parse(localStorage.getItem('itemsPerPage'))))
+    console.log(itemsPerPage)
+  },[])
+
+  useEffect(()=>{
+
     const fetchData = async ()=>{
       try{
-         let {data :{data,hasNext,hasPrevious,pages}} = await axios.get(`http://localhost:4000/transactions?page=${currentPage}`,{
+        console.log(itemsPerPage)
+         let {data :{data,hasNext,hasPrevious,pages}} = await axios.get(`http://localhost:4000/transactions?page=${currentPage}&limit=${itemsPerPage}`,{
           headers : {
             'Authorization' : `Bearer ${token}`
           }
@@ -36,9 +43,9 @@ const AllTransactions = () => {
         console.log(error)
       }
     }
-    fetchData()
-    
-  },[currentPage,token])
+    fetchData() 
+  },[currentPage,token,itemsPerPage])
+
 
     const deleteTransaction = async (transactionId,amount,type)=>{
       console.log(transactionId)
@@ -67,6 +74,12 @@ const AllTransactions = () => {
         setCurrentPage((prevPage)=>prevPage-1)
       }
     }
+
+    const handleitemsPerPageChange = (e)=>{
+      window.localStorage.setItem('itemsPerPage',JSON.stringify(e.target.value))
+      setItemsPerpage(e.target.value)
+      setCurrentPage(1)
+    }
   
    
   return (
@@ -74,8 +87,21 @@ const AllTransactions = () => {
       <div className="min-h-screen w-1/5" >
         <Sidebar />
       </div>
-      <div className="w-full h-full mt-5 flex flex-col justify-center items-center">
+      <div className="w-full h-full mt-5 flex flex-col justify-center items-center text-xl">
         <h1 className="font-serif text-yellow-400 text-4xl mb-5">Transactions</h1>
+        <div className="flex justify-end items-center gap-4">
+        <label className="text-white">Items per page:</label>
+      <select
+        className="border border-gray-300 p-1 rounded-md text-white bg-black"
+        value={itemsPerPage}
+        onChange={handleitemsPerPageChange}
+      >
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+      </select>
+      </div>
        {
         transactions.map((transaction)=>{
           return <Transactions key={transaction.id} data={transaction} handleDelete={deleteTransaction} />
