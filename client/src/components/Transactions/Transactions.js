@@ -1,9 +1,15 @@
 import React from 'react'
 import Money from '../../assets/money.png'
+import classNames from 'classnames'
 
 const Transactions = ({data,handleDelete}) => {
   const {description,amount,date,transactionType,category,id} = data
-  return (
+
+  const dynamicClass = classNames('flex bg-slate-800 rounded-xl w-fit px-2 py-1 ml-3 font-medium',{
+     'text-green-400': transactionType === 'income',
+     'text-red-400' : transactionType === 'expense'
+  })
+  return ( 
     <div className="flex bg-black rounded-lg w-3/5 mt-1">
        <div className="bg-slate-800 rounded-full p-1 m-3 flex justify-center items-center">
         <img src={Money} alt="Money"/>
@@ -30,7 +36,7 @@ const Transactions = ({data,handleDelete}) => {
           <div className="flex text-yellow-400 bg-slate-800 rounded-xl w-fit px-2 py-1 ml-3 font-medium ">
             <p className="text-sm  ml-1">{category}</p>
           </div>
-          <div className="flex text-green-600 bg-slate-800 rounded-xl w-fit px-2 py-1 ml-3 font-medium ">
+          <div className={dynamicClass}>
             <p className="text-sm  ml-1">{transactionType}</p>
           </div>
         </div> 

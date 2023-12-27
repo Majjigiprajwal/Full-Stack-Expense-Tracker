@@ -34,10 +34,17 @@ exports.addTransaction = async (req,res,next)=>{
 
 exports.getTransactions = async (req,res,next)=>{
     const user = req.user
-
+    const page = Number(req.query.page)
+    const limit = 6;
     try{
-      let data = await user.getTransactions()
-       return res.status(200).json({success:true,data:data,message:"Fetched all the transactions successfully"})
+      let count = await user.countTransactions()
+      let data = await user.getTransactions({
+        offset : (page-1) * limit,
+        limit : limit
+      })
+       let totalPages = Math.ceil(Number(count)/Number(limit))
+       return res.status(200).json({success:true,data:data,pages:totalPages,hasNext:page<totalPages,
+                                    hasPrevious:page>1,message:"Fetched all the transactions successfully"})
     }
     catch(error){
         console.log(error)
@@ -74,5 +81,16 @@ exports.deleteTransaction = async (req,res,next)=>{
           await t.rollback()
           return res.status(500).json({success:false,message:'Please try after sometime'})
 
+    }
+}
+
+exports.getFinancialStatus = async (req,res,next)=>{
+    try{
+         const {totalExpense,totalIncome,balance} = req.user
+
+         return res.status(200).json({success:true,message:'Fetched data successfully',expense:totalExpense,income:totalIncome,balance:balance})
+    }
+    catch(error){
+        return res.status(500).json({success:false,message:'please try after siometime'})
     }
 }
