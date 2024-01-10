@@ -1,5 +1,6 @@
 import React from 'react'
 import Money from '../../assets/money.png'
+import Update from '../../assets/update.png'
 import classNames from 'classnames'
 
 const Transactions = ({data,handleDelete,openModal,update}) => {
@@ -63,25 +64,9 @@ const Transactions = ({data,handleDelete,openModal,update}) => {
             clipRule="evenodd"
           />
         </svg>
-        delete
     </div>
     <div className="text-yellow-400 w-1/12  p-2 ml-2 flex  justify-center items-center mb:hidden" onClick={()=>{update(data)}}>
-        {/* <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="28"
-          height="28"
-          viewBox="0 0 28 28"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-        <circle cx="12" cy="12" r="11" />
-        <polyline points="16 12 12 8 8 12" />
-        <line x1="12" y1="16" x2="12" y2="8" />
-        </svg> */}
-        update
+        <img src={Update} alt="update" />
     </div>
     </div>
   )
