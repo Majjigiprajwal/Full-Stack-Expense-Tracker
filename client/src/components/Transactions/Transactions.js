@@ -4,6 +4,7 @@ import classNames from 'classnames'
 
 const Transactions = ({data,handleDelete,openModal,update}) => {
   const {description,amount,date,transactionType,category,id} = data
+  console.log(data)
 
   const dynamicClass = classNames('flex bg-slate-800 rounded-xl w-fit px-2 py-1 ml-3 font-medium mb:m-0',{
      'text-green-400': transactionType === 'income',
