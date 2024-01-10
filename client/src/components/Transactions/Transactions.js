@@ -50,7 +50,7 @@ const Transactions = ({data,handleDelete,openModal,update}) => {
         <p className="mt-2">₹ {amount}</p>
     </div>
     <div className="text-yellow-400 w-1/12  p-3 ml-2 flex  justify-center items-center mb:w-1/12 mb:p-1 mb:ml-1">
-    {/* <svg
+    <svg
           xmlns="http://www.w3.org/2000/svg"
           className="hover:scale-110"
           viewBox="0 0 20 20"
@@ -62,7 +62,7 @@ const Transactions = ({data,handleDelete,openModal,update}) => {
             d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
             clipRule="evenodd"
           />
-        </svg> */}
+        </svg>
         delete
     </div>
     <div className="text-yellow-400 w-1/12  p-2 ml-2 flex  justify-center items-center mb:hidden" onClick={()=>{update(data)}}>
