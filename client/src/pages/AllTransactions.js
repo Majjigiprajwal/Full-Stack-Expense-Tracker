@@ -6,6 +6,9 @@ import { MdOutlineArrowForwardIos } from "react-icons/md";
 import {useState} from 'react'
 import axios from 'axios'
 import classNames from 'classnames'
+import Modal from 'react-modal'
+import UpdateModal from '../components/Modals/UpdateModal';
+import {FaRupeeSign} from "react-icons/fa"
 
 const AllTransactions = () => {
 
@@ -14,14 +17,15 @@ const AllTransactions = () => {
   const [hasPrevious,setHasPrevious] = useState(false)
   const [hasNext,setHasNext] = useState(false)
   const [totalPages,setTotalPages] = useState(null)
-  const [itemsPerPage,setItemsPerpage] = useState(null)
-
+  const [itemsPerPage,setItemsPerpage] = useState(5)
+  const [isModalOpen,setIsModalOpen] = useState(false)
+  const [dataToBeUpdated,setDataToBeUpdated] = useState({})
+  const [menu,setMenu] = useState(false)
 
   const token = JSON.parse(localStorage.getItem('token'));
 
   useEffect(()=>{
     setItemsPerpage(()=>Number(JSON.parse(localStorage.getItem('itemsPerPage'))))
-    console.log(itemsPerPage)
   },[])
 
   useEffect(()=>{
@@ -44,11 +48,10 @@ const AllTransactions = () => {
       }
     }
     fetchData() 
-  },[currentPage,token,itemsPerPage])
+  },[currentPage,token,itemsPerPage,isModalOpen])
 
 
     const deleteTransaction = async (transactionId,amount,type)=>{
-      console.log(transactionId)
         try{
           await axios.delete(`http://localhost:4000/deleteTransaction/${transactionId}?amount=${amount}&type=${type}`,{
             headers : {
@@ -59,7 +62,7 @@ const AllTransactions = () => {
            setTransactions(()=>updatedTransaction)
         }
         catch(error){
-
+           console.log(error)
         }
     }
 
@@ -80,19 +83,51 @@ const AllTransactions = () => {
       setItemsPerpage(e.target.value)
       setCurrentPage(1)
     }
+
+    const openModal = ()=>{
+      setIsModalOpen(true)
+    }
+
+    const closeModal = ()=>{
+      setIsModalOpen(false)
+    }
+
+    const handleUpdate = (data)=>{
+      setIsModalOpen(true)
+      setDataToBeUpdated(data)
+    }
+
   
    
   return (
-    <div className="bg-slate-800 flex w-full min-h-screen">
-      <div className="min-h-screen w-1/5" >
+    <div className="bg-slate-800 flex w-full min-h-screen mb:flex-col">
+      <div className={classNames('lg:hidden','md:hidden','flex','justify-between','p-2','bg-black','text-yellow-400','text-2xl','font-serif',{'hidden':menu,'visible':!menu})}>
+        <h1><FaRupeeSign className="inline-block mr-2  ml-2"/>Tracker</h1>
+        <button onClick={()=>setMenu(true)}><svg
+               xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 24 24"
+               width="24"
+               height="24"
+               fill="none"
+               stroke="currentColor"
+               strokeWidth="2"
+               strokeLinecap="round"
+               strokeLinejoin="round"
+                >
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg></button>
+      </div>
+      <div className={classNames('w-1/5','min-h-screen',{'mb:hidden':!menu,'mb:visible':menu})} >
         <Sidebar />
       </div>
-      <div className="w-full h-full mt-5 flex flex-col justify-center items-center text-xl">
+      <div className="w-full h-full mt-5 flex flex-col justify-center items-center text-xl mb:text-xs">
         <h1 className="font-serif text-yellow-400 text-4xl mb-5">Transactions</h1>
         <div className="flex justify-end items-center gap-4">
-        <label className="text-white">Items per page:</label>
+        <label className="text-white mb:text-lg">Items per page:</label>
       <select
-        className="border border-gray-300 p-1 rounded-md text-white bg-black"
+        className="border border-gray-300 p-1 rounded-md text-white bg-black mb:text-sm "
         value={itemsPerPage}
         onChange={handleitemsPerPageChange}
       >
@@ -104,7 +139,7 @@ const AllTransactions = () => {
       </div>
        {
         transactions.map((transaction)=>{
-          return <Transactions key={transaction.id} data={transaction} handleDelete={deleteTransaction} />
+          return <Transactions key={transaction.id} data={transaction} handleDelete={deleteTransaction} openModal={openModal} update={handleUpdate}  />
         })
        }
        <div className="flex justify-center items-center gap-10 text-xl mt-5 ">
@@ -113,7 +148,9 @@ const AllTransactions = () => {
         <button className={classNames('rounded-full','p-2',{'hover:bg-yellow-300 bg-white':hasNext,'bg-slate-400':!hasNext})} disabled={!hasNext} onClick={()=>{handleForwardClick()}}><MdOutlineArrowForwardIos className="text-2xl text-black"  /></button>
       </div>
       </div>
-      
+      <Modal isOpen={isModalOpen} className="flex justify-center items-center w-full mt-10">
+          <UpdateModal  closeModal={closeModal}  updateData={dataToBeUpdated} />
+      </Modal>
     </div>
   )
 }

@@ -2,6 +2,7 @@ const User = require('../Models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const saltRounds = 8;
+const secret = process.env.JWT_SECRET
 
 exports.getUser = async(req,res,next)=>{
     const userData = req.body;
@@ -17,7 +18,7 @@ exports.getUser = async(req,res,next)=>{
         return res.status(401).json({ error: 'Password incorrect' })
        }
         
-       const token = jwt.sign({userId : user.id},'fullstack-project',{ expiresIn: '1d' })
+       const token = jwt.sign({userId : user.id,premium:user.isPremium},secret,{ expiresIn: '1d' })
  
        return res.status(200).json({ message: 'Login successful',token : token});
     }

@@ -1,11 +1,14 @@
 import React from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify';
+import { usePremium } from '../../context/PremiumContext';
 
 const Premium = () => {
 
   const token = JSON.parse(localStorage.getItem('token'))
+  const {setIsPremium} = usePremium()
 
+  
   function loadScript(src) {
     return new Promise((resolve) => {
         const script = document.createElement("script");
@@ -21,6 +24,7 @@ const Premium = () => {
 }
 
   const handlePayment = async ()=>{
+    console.log('clicked')
     try{
       const res = await loadScript(
         "https://checkout.razorpay.com/v1/checkout.js"
@@ -57,8 +61,8 @@ const Premium = () => {
           progress: undefined,
           theme: "dark",
           });
-          console.log(response)
-
+          setIsPremium(true)
+          window.localStorage.setItem('token',JSON.stringify(response.data.token))  
         }
       };
       const razorpay = new window.Razorpay(options);
@@ -80,6 +84,7 @@ const Premium = () => {
       })
     }
     catch(error){
+      console.log(error)
       toast.error('sorry try after sometime', {
         position: "top-center",
         autoClose: 5000,
@@ -93,7 +98,7 @@ const Premium = () => {
     }
   }
   return (
-    <div className="bg-yellow-400  p-3 justify-center align-middle  text-black rounded-md w-full text-2xl">
+    <div className="bg-yellow-400  p-3 justify-center align-middle  text-black rounded-md w-full font-bold text-xl">
       <button onClick={handlePayment} >Buy Premium</button>
     </div> 
   )

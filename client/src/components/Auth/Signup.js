@@ -3,18 +3,11 @@ import {useState} from 'react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
+import {FaRupeeSign} from "react-icons/fa"
 
 const Signup = () => {
 
   const navigate = useNavigate();
-  const token = JSON.parse(localStorage.getItem('token'))
-
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  };
-  
       
   const [user,setUser] = useState({
     email:"",
@@ -43,8 +36,7 @@ const Signup = () => {
         return
     }
     try{
-      let response = await axios.post('http://localhost:4000/login',user,config)
-      console.log(token)
+      let response = await axios.post('http://localhost:4000/login',user)
       toast.success("Login Succesful", {
         position: "top-right",
         autoClose: 5000,
@@ -56,6 +48,7 @@ const Signup = () => {
         theme: "dark",
         });
       window.localStorage.setItem('token',JSON.stringify(response.data.token))  
+      console.log(response.data.token)
       navigate("/dashboard");
     }
     catch(error){
@@ -90,7 +83,7 @@ const Signup = () => {
           return
       }
 
-      toast.error("Server Error",{
+      toast.error("Could not login at the moment,please try after sometime",{
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -105,17 +98,17 @@ const Signup = () => {
   }
   return (
     <>
-    <div className="bg-black flex min-h-full  flex-1 flex-col h-screen items-center justify-center  px-6 py-12 lg:px-8 border border-solid border-gray-400 p-4">
+    <div className="bg-black flex min-h-full  flex-1 flex-col h-screen items-center justify-center   px-6 py-12 lg:px-8 border border-solid border-gray-400 p-4">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-yellow-400">
             Sign in to your account
           </h2>
         </div>
 
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" onSubmit={(e)=>{handleSubmit(e)}} >
+        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm mb:w-full">
+          <form className="space-y-6 text-lg mb:text-lg" onSubmit={(e)=>{handleSubmit(e)}} >
             <div>
-              <label htmlFor="email" className="block text-lg font-bold leading-6 text-yellow-400">
+              <label htmlFor="email" className="block  font-bold leading-6 text-yellow-400">
                 Email address
               </label>
               <div className="mt-2">
@@ -128,18 +121,18 @@ const Signup = () => {
                     handleChange(e)
                   }}
                   required
-                  className="block w-full rounded-md border-0 py-1 px-1.5 text-sm font-medium text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-black focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1 px-1.5 text-lg font-medium text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-black focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
 
             <div>
               <div className="flex items-center justify-between">
-                <label htmlFor="password" className="block text-lg font-bold leading-6 text-yellow-400">
+                <label htmlFor="password" className="block  font-bold leading-6 text-yellow-400">
                   Password
                 </label>
-                <div className="text-sm">
-                  <a href="#" className="font-semibold text-yellow-400 hover:text-white">
+                <div className="mb:text-right mb:text-xs text-sm">
+                  <a className="font-semibold text-yellow-400 hover:text-white cursor-pointer" onClick={()=>navigate('/sendMail')}>
                     Forgot password?
                   </a>
                 </div>
@@ -154,7 +147,7 @@ const Signup = () => {
                     handleChange(e)
                   }}
                   required
-                  className="block w-full rounded-md border-0 py-1 px-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-black focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1 px-1.5 text-black text-lg shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-black focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
@@ -162,7 +155,7 @@ const Signup = () => {
             <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-yellow-400 px-3 py-1.5 text-sm font-semibold leading-6 text-black shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="flex w-full justify-center rounded-md bg-yellow-400 px-3 py-1.5 text-lg font-semibold leading-6 text-black shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Sign in
               </button>
@@ -171,7 +164,7 @@ const Signup = () => {
 
           <p className="mt-10 text-center text-sm text-white">
           Don't have an account?{' '}
-            <a href="#" className="font-semibold leading-6 text-yellow-400 hover:text-white">
+            <a  className="font-semibold leading-6 text-yellow-400 hover:text-white  cursor-pointer" onClick={()=>navigate('/signup')} >
               Signup
             </a>
           </p>

@@ -1,4 +1,3 @@
-const api_key = API_KEY;
 const Sib =  require('sib-api-v3-sdk')
 const { v4: uuidv4 } = require('uuid');
 const PasswordRequest = require('../Models/forgotPassword')
@@ -11,7 +10,7 @@ const saltRounds = 8;
 const Client = Sib.ApiClient.instance;
 
 const apiKey = Client.authentications['api-key'];
-apiKey.apiKey = api_key
+apiKey.apiKey = process.env.SIB_API_KEY
 
 exports.sendEmail = async (req,res,next)=>{
        const email = req.body.email
@@ -49,6 +48,7 @@ exports.sendEmail = async (req,res,next)=>{
 
     }
     catch(error){
+      console.log(error)
        await t.rollback()
        return res.status(500).json({success:false,message:'Could not send mail try after sometime'})
 

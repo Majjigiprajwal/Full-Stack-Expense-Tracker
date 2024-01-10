@@ -2,7 +2,7 @@ import React,{useState} from 'react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom'
-
+import {FaRupeeSign} from "react-icons/fa"
 
 const Login = () => {
    
@@ -64,11 +64,20 @@ const Login = () => {
           progress: undefined,
           theme: "dark",
           });
-         navigate("/signup")
+         navigate("/")
       }
     }
     catch(error){
-      console.log(error);
+      toast.error("Could not signup at the moment,please try after sometime",{
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        });
     }  
   }
   return (
@@ -151,7 +160,7 @@ const Login = () => {
                 <input
                   id="confirmPassword"
                   name="confirmPassword"
-                  type="confirmPassword"
+                  type="Password"
                   onChange={(e)=>{
                     handleChange(e)
                   }}

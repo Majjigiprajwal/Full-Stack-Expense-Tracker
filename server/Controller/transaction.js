@@ -5,7 +5,6 @@ const Transaction = require('../Models/transaction');
 
 exports.addTransaction = async (req,res,next)=>{
     const user = req.user;
-    console.log(user.id)
     const {transaction} = req.body
     let t;
     try{
@@ -52,6 +51,52 @@ exports.getTransactions = async (req,res,next)=>{
     }
 }
 
+exports.getAllTransactions = async (req,res,next)=>{
+    const user = req.user
+    try{
+        let data = await user.getTransactions()
+         return res.status(200).json({success:true,data:data,message:"Fetched all the transactions successfully"})
+    }
+    catch(error){
+        return res.status(500).json({Success:false,message:"Failed to fetch the data please try after sometime"})
+    }
+}
+
+exports.updateTransaction = async(req,res,next)=>{
+    const user = req.user
+    const {transaction} = req.body
+    const updatedAmount =Number(transaction.amount)
+    let t;
+    try{
+        t = await sequelise.transaction()
+        const response = await Transaction.findOne({where:{userId:user.id,id:transaction.id}})
+        if(!response){
+            return res.status(404).json({success:false,message:'Sorry could not find the transaction'})
+        }
+        if(transaction.transactionType === 'expense'){
+            const balance = Number(user.balance)+Number(updatedAmount)-Number(response.amount);
+            const totalExpense = Number(user.totalExpense)+Number(updatedAmount)-Number(response.amount)
+            await response.update(transaction,{transaction:t})
+            await user.update({totalExpense:totalExpense,balance:balance}, { transaction: t })
+            await t.commit();
+            return res.status(201).json({success:true,message:'Deleted the transaction successfully'})
+        }
+        else{
+            const balance = Number(user.balance)+Number(updatedAmount)-Number(response.amount);
+            const totalIncome = Number(user.totalIncome)+Number(updatedAmount)-Number(response.amount)
+            await response.update(transaction,{transaction:t})
+            await user.update({totalIncome:totalIncome,balance:balance}, { transaction: t })
+            await t.commit();
+            return res.status(201).json({success:true,message:'Deleted the transaction successfully'})
+        }
+
+    }
+    catch(error){
+          await t.rollback()
+          return res.status(500).json({success:false,message:'Could not update the Transaction,please try after sometime'})
+    }
+}
+
 exports.deleteTransaction = async (req,res,next)=>{
        const id = req.params.id
        const amount = req.query.amount
@@ -61,7 +106,6 @@ exports.deleteTransaction = async (req,res,next)=>{
     try{
         t = await sequelise.transaction()
         const response = await Transaction.destroy({where:{id : id}},{transaction :t})
-        console.log(response);
         if(transactionType === 'expense'){
             const balance = Number(user.balance)+Number(amount);
             const totalExpense = Number(user.totalExpense)-Number(amount)

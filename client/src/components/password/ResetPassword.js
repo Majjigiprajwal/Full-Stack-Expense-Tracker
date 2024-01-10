@@ -45,7 +45,7 @@ const ResetPassword = () => {
                 progress: undefined,
                 theme: "dark",
                 });
-            navigate('/signup')
+            navigate('/')
          }
          catch(error){
             console.log(error)

@@ -28,7 +28,7 @@ const SendMail = () => {
             return
         }
         try{
-          let response = await axios.post('http://localhost:4000/forgotPassword',{email},)
+          await axios.post('http://localhost:4000/forgotPassword',{email},)
           toast.success("Mail sent successfully", {
             position: "top-center",
             autoClose: 5000,
