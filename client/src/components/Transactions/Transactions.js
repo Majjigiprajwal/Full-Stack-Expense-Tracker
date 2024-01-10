@@ -1,20 +1,21 @@
 import React from 'react'
 import Money from '../../assets/money.png'
 import classNames from 'classnames'
+import { useState } from 'react'
 
-const Transactions = ({data,handleDelete}) => {
+const Transactions = ({data,handleDelete,openModal,update}) => {
   const {description,amount,date,transactionType,category,id} = data
 
-  const dynamicClass = classNames('flex bg-slate-800 rounded-xl w-fit px-2 py-1 ml-3 font-medium',{
+  const dynamicClass = classNames('flex bg-slate-800 rounded-xl w-fit px-2 py-1 ml-3 font-medium mb:m-0',{
      'text-green-400': transactionType === 'income',
      'text-red-400' : transactionType === 'expense'
   })
   return ( 
-    <div className="flex bg-black rounded-lg w-3/5 mt-1">
-       <div className="bg-slate-800 rounded-full p-1 m-3 flex justify-center items-center">
+    <div className="flex bg-black rounded-lg w-3/5 mt-1 mb:w-full ">
+       <div className="bg-slate-800 rounded-full p-1 m-3 flex justify-center items-center mb:hidden">
         <img src={Money} alt="Money"/>
        </div>
-       <div className=" m-2 w-3/5 ">
+       <div className=" m-2 w-3/5 mb:w-8/12  no-scrollbar overflow-hidden ">
         <div className="flex">
           <div className="flex text-yellow-400 bg-slate-800 rounded-xl w-fit px-2 py-1 ">
             <svg
@@ -29,26 +30,26 @@ const Transactions = ({data,handleDelete}) => {
                 clipRule="evenodd"
               />
             </svg>
-            <p className="text-sm  ml-1 font-medium">
+            <p className="mb:text-xs  ml-1 font-medium text-sm">
              {date}
             </p>
           </div>
-          <div className="flex text-yellow-400 bg-slate-800 rounded-xl w-fit px-2 py-1 ml-3 font-medium ">
-            <p className="text-sm  ml-1">{category}</p>
+          <div className="flex text-yellow-400 bg-slate-800 rounded-xl w-fit px-2 py-1 ml-3 font-medium mb:m-0 ">
+            <p className="mb:text-xs  ml-1 text-sm">{category}</p>
           </div>
           <div className={dynamicClass}>
-            <p className="text-sm  ml-1">{transactionType}</p>
+            <p className="mb:text-xs text-sm  ml-1">{transactionType}</p>
           </div>
         </div> 
-        <div className="text-white mt-2 text-lg  font-medium overflow-hidden">
-            {description}
+        <div className="text-white  mt-2 text-lg font-medium overflow-hidden overflow-x-auto whitespace-nowrap mb:text-sm mb:w-10/12">
+             {description}
         </div>
     </div>
-    <div className="m-2 text-white font-medium text-xl w-2/12">
-        <p className="text-yellow-400">Amount</p>
+    <div className="m-2 text-white font-medium text-xl w-3/12 mb:w-2/12 mb:text-lg ">
+        <p className="text-yellow-400 mb:text-sm">Amount</p>
         <p className="mt-2">₹ {amount}</p>
     </div>
-    <div className="text-yellow-400 w-1/12 p-3 ml-2 flex  justify-center items-center">
+    <div className="text-yellow-400 w-1/12  p-3 ml-2 flex  justify-center items-center mb:w-1/12 mb:p-1 mb:ml-1">
     <svg
           xmlns="http://www.w3.org/2000/svg"
           className="hover:scale-110"
@@ -63,8 +64,24 @@ const Transactions = ({data,handleDelete}) => {
           />
         </svg>
     </div>
+    <div className="text-yellow-400 w-1/12  p-2 ml-2 flex  justify-center items-center mb:hidden" onClick={()=>{update(data)}}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="28"
+          height="28"
+          viewBox="0 0 28 28"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+        <circle cx="12" cy="12" r="11" />
+        <polyline points="16 12 12 8 8 12" />
+        <line x1="12" y1="16" x2="12" y2="8" />
+        </svg>
     </div>
-    
+    </div>
   )
 }
 

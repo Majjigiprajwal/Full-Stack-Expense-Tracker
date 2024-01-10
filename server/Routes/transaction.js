@@ -8,7 +8,11 @@ const transactionController = require('../Controller/transaction')
 
 router.post('/add-transaction',isAuth,transactionController.addTransaction)
 
+router.post('/update-transaction',isAuth,transactionController.updateTransaction)
+
 router.get('/transactions',isAuth,transactionController.getTransactions)
+
+router.get('/allTransactions',isAuth,transactionController.getAllTransactions)
 
 router.get('/financial-status',isAuth,transactionController.getFinancialStatus)
 
