@@ -97,15 +97,15 @@ const AddExpense = () => {
     <div className=" text-white text-4xl flex  items-center m-5 ">
       <FaRupeeSign />
       <input className="p-3 bg-black text-4xl w-2/4 border-b-2 outline-none mb:text-3xl no-spinners "
-       placeholder="0" type="number" onChange={(e)=>{handleOnchange(e)}} name="amount"></input>
+       placeholder="0" type="number" onChange={(e)=>{handleOnchange(e)}} name="amount" required></input>
     </div>
-    <input className="p-3 px-4 text-2xl font-medium rounded-md ml-12 mt-2 w-2/4 placeholder-yellow-400 bg-slate-700 outline-none text-white mb:w-4/5 mb:text-xl mb:font-normal" name="description" placeholder="where was the income from?" onChange={(e)=>{handleOnchange(e)}}></input>
-    <input className="p-3 px-4 text-xl font-medium rounded-md mt-4 ml-12 w-1/4 placeholder-yellow-400 bg-slate-700 outline-none text-white mb:w-3/5 mb:text-xl mb:font-normal" placeholder="Date" name="date" type="date" onChange={(e)=>{handleOnchange(e)}}></input>
+    <input className="p-3 px-4 text-2xl font-medium rounded-md ml-12 mt-2 w-2/4 placeholder-yellow-400 bg-slate-700 outline-none text-white mb:w-4/5 mb:text-xl mb:font-normal" name="description" placeholder="where was the income from?"  onChange={(e)=>{handleOnchange(e)}} required></input>
+    <input className="p-3 px-4 text-xl font-medium rounded-md mt-4 ml-12 w-1/4 placeholder-yellow-400 bg-slate-700 outline-none text-white mb:w-3/5 mb:text-xl mb:font-normal" placeholder="Date" name="date" type="date"  onChange={(e)=>{handleOnchange(e)}} required></input>
     <div className="ml-12 mt-2 ">
           <h1 className="text-white  font-bold text-xl  mt-4 mb:font-medium">Category</h1>
         </div>
         <div className="text-black ml-12 mt-2">
-          <select className="bg-slate-700 text-white px-3 text-xl py-2 my-1 rounded mb:text-lg"  name="category" id="categories"  onChange={(e)=>{handleOnchange(e)}}>
+          <select className="bg-slate-700 text-white px-3 text-xl py-2 my-1 rounded mb:text-lg"  name="category" id="categories"   onChange={(e)=>{handleOnchange(e)}} required>
             <option value="General">General</option>
             <option value="Salary">Salary</option>
             <option value="Investments">Investments</option>

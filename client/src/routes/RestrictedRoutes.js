@@ -8,9 +8,9 @@ const RestrictedRoutes = () => {
   return (
     <div>
     {isPremium ? (
-         <Navigate to="/dashboard" />
+            <Outlet />
     ) : (
-      <Outlet />
+      <Navigate to="/dashboard" />
     )}
   </div>
   )

@@ -1,4 +1,4 @@
-import React,{useEffect,useState} from 'react';
+import React from 'react';
 import './App.css';
 import {Routes,Route} from 'react-router-dom'
 import Login from './components/Auth/Login'
@@ -16,23 +16,11 @@ import Report from './pages/Report';
 import PrivateRoutes from './routes/PrivateRoutes';
 import RestrictedRoutes from './routes/RestrictedRoutes';
 import Modal from 'react-modal'
-import Sidebar from './components/dashboard/Sidebar';
+import {v4 as uuidv4} from 'uuid'
 
 function App() {
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 480 && window.innerWidth > 320);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
+ 
+ const id = uuidv4()
 
   Modal.setAppElement("#root");
 

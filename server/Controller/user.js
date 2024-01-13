@@ -15,15 +15,15 @@ exports.getUser = async(req,res,next)=>{
        const passwordsMatch = await bcrypt.compare(userData.password,user.password);
        
        if(!passwordsMatch){
-        return res.status(401).json({ error: 'Password incorrect' })
+        return res.status(401).json({success:false, error: 'Password incorrect' })
        }
         
        const token = jwt.sign({userId : user.id,premium:user.isPremium},secret,{ expiresIn: '1d' })
  
-       return res.status(200).json({ message: 'Login successful',token : token});
+       return res.status(200).json({success:true, message: 'Login successful',token : token});
     }
     catch(error){
-        return res.status(500).json({ error: 'Internal Server Error' });  
+        return res.status(500).json({success:false, error: 'Internal Server Error' });  
     }
 }
 
@@ -32,11 +32,18 @@ exports.registerUser = async (req,res,next)=>{
     const hashPassword = await bcrypt.hash(data.password, saltRounds)
     data.password = hashPassword;
     try{
-        let response = await User.create(data)
-        res.status(201).send(response);
+        let user = await User.findOne({where :{email :req.body.email}})
+        if(user){
+            return res.status(400).json({success:false,message:'user  already exists,please login or use different email address'})
+        }
+        else{
+        await User.create(data)
+        res.status(201).json({success:true,message:'Account successfully created'});
+        }
     }
     catch(error){
-        console.log(error);
+        console.log(error)
+        return res.status(500).json({success:false,message:'Internal server error,please try after sometime'})
     }
 }
 

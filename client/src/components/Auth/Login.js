@@ -25,8 +25,8 @@ const Login = () => {
 
   const handleSubmit = async (e)=>{
     e.preventDefault();
-    if(user.name.trim()==="" || user.email.trim()==="" || user.password.trim()==="" || user.confirmPassword.trim()==="" ){
-      toast.error('Fill all the details', {
+    if(user.name.trim()==="" || user.email.trim()==="" || user.password.trim()==="" || user.confirmPassword.trim()===""){
+      toast.error('Fill all the details correctly', {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -51,6 +51,19 @@ const Login = () => {
         });
         return
     }
+    else if(user.password.length < 8){
+      toast.error('Passwords should be alteast 8 characters', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        });
+        return 
+    }
     try{
       let response = await axios.post('http://localhost:4000/register',user);
       if(response.status === 201){
@@ -68,6 +81,19 @@ const Login = () => {
       }
     }
     catch(error){
+      if(error?.response?.status === 400){
+        toast.error('Email already exists,Please try with different Email address',{
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          });
+          return
+      }  
       toast.error("Could not signup at the moment,please try after sometime",{
         position: "top-right",
         autoClose: 5000,
@@ -84,7 +110,7 @@ const Login = () => {
     <>
     <div className="bg-black flex min-h-full  flex-1 flex-col h-screen items-center justify-center  px-6 py-12 lg:px-8 border border-solid border-gray-400 p-4">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <h2 className="text-center text-2xl text-yellow-400 font-bold leading-9 tracking-tight">
+          <h2 className="text-center text-3xl mb-5 text-yellow-400 font-bold leading-9 tracking-tight mb:text-2xl">
             Sign up for an account
           </h2>
         </div>

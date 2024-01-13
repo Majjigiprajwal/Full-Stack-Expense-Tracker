@@ -10,22 +10,21 @@ exports.addTransaction = async (req,res,next)=>{
     try{
         t = await sequelise.transaction()
         await user.createTransaction(transaction, { transaction: t })
-        await t.commit();
-        t = await sequelise.transaction();
-        let response = await Promise.all([
-            Transaction.sum('amount',{where:{userId:user.id,transactionType:'expense'}}, { transaction: t }),
-            Transaction.sum('amount',{where:{userId:user.id,transactionType:'income'}}, { transaction: t })
-            ])
-        let expense = Number(response[0] || 0)
-        let income = Number(response[1] || 0)
-        let balance = Number(income-expense)
-        await user.update({totalExpense:expense,totalIncome:income,balance:balance}, { transaction: t })
-        await t.commit()
-        console.log('commited')
+        if(transaction.transactionType === 'income'){
+            let income = Number(transaction.amount)+Number(user.totalIncome)
+            let balance = Number(user.balance) + Number(transaction.amount)
+            await user.update({totalIncome:income,balance:balance}, { transaction: t })
+            await t.commit()
+        }
+        else{
+            let expense = Number(transaction.amount)+Number(user.totalExpense)
+            let balance = Number(user.balance) - Number(transaction.amount)
+            await user.update({totalExpense:expense,balance:balance}, { transaction: t })
+            await t.commit()
+        }
         return  res.status(201).json({success:true,message:'Transaction added successfully'});
     }
     catch(error){
-        console.log(error)
         await t.rollback()
         res.status(500).json({success:false,message:'Failed to  add transaction please try after sometime'})
     }

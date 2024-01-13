@@ -52,8 +52,6 @@ const Signup = () => {
       navigate("/dashboard");
     }
     catch(error){
-      console.log(error)
-      
      if(error?.response?.status === 401){
         toast.error("Password is incorrect", {
           position: "top-right",
@@ -69,7 +67,7 @@ const Signup = () => {
       }
 
       if(error?.response?.status === 404){
-        toast.error("Please register for an account",{
+        toast.error("Please register for an account,",{
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -79,7 +77,7 @@ const Signup = () => {
           progress: undefined,
           theme: "dark",
           });
-          navigate("/")
+          navigate("/signup")
           return
       }
 
@@ -100,7 +98,7 @@ const Signup = () => {
     <>
     <div className="bg-black flex min-h-full  flex-1 flex-col h-screen items-center justify-center   px-6 py-12 lg:px-8 border border-solid border-gray-400 p-4">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-yellow-400">
+          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-yellow-400 mb:text-2xl mb:mb-5">
             Sign in to your account
           </h2>
         </div>
@@ -108,7 +106,7 @@ const Signup = () => {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm mb:w-full">
           <form className="space-y-6 text-lg mb:text-lg" onSubmit={(e)=>{handleSubmit(e)}} >
             <div>
-              <label htmlFor="email" className="block  font-bold leading-6 text-yellow-400">
+              <label htmlFor="email" className="block  font-bold leading-6 text-yellow-400 mb:text-xl">
                 Email address
               </label>
               <div className="mt-2">
@@ -121,14 +119,14 @@ const Signup = () => {
                     handleChange(e)
                   }}
                   required
-                  className="block w-full rounded-md border-0 py-1 px-1.5 text-lg font-medium text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-black focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1 px-1.5 text-lg font-medium text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-black focus:ring-2 focus:ring-inset focus:ring-indigo-600 mb:text-xl"
                 />
               </div>
             </div>
 
             <div>
               <div className="flex items-center justify-between">
-                <label htmlFor="password" className="block  font-bold leading-6 text-yellow-400">
+                <label htmlFor="password" className="block  font-bold leading-6 text-yellow-400 mb:text-xl">
                   Password
                 </label>
                 <div className="mb:text-right mb:text-xs text-sm">
@@ -147,7 +145,7 @@ const Signup = () => {
                     handleChange(e)
                   }}
                   required
-                  className="block w-full rounded-md border-0 py-1 px-1.5 text-black text-lg shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-black focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1 px-1.5 text-black text-lg shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-black focus:ring-2 focus:ring-inset focus:ring-indigo-600 mb:text-xl"
                 />
               </div>
             </div>
@@ -155,7 +153,7 @@ const Signup = () => {
             <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-yellow-400 px-3 py-1.5 text-lg font-semibold leading-6 text-black shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="flex w-full justify-center rounded-md bg-yellow-400 px-3 py-1.5 text-lg font-semibold leading-6 text-black shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 mb:text-xl"
               >
                 Sign in
               </button>

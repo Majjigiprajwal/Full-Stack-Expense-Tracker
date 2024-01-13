@@ -14,8 +14,8 @@ const DoughnutChart = ({data}) => {
       };
     ChartJS.register(ArcElement, Tooltip, Legend);
   return (
-    <div className="bg-black  text-white w-2/5 h-2/3 rounded-xl  flex justify-center items-center mb:w-full text-re">
-      <Doughnut data={dataSet}  />
+    <div className="bg-black opacity-90 w-2/5 h-2/3 rounded-xl flex justify-center items-center mb:w-full">
+      <Doughnut data={dataSet} />
     </div>
   )
 }

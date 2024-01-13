@@ -36,13 +36,69 @@ exports.sendEmail = async (req,res,next)=>{
              sender,
              to:reciever,
              subject:'Reset Password',
-             htmlContent :`<html>
-             <h2>RESET PASSWORD</h2>
-             <p>Click on the below button to reset your password</p>
-             <a href="http://localhost:3000/reset-password/${id}">Click Here</a>
+             htmlContent :`<!DOCTYPE html>
+             <html lang="en">
+             
+             <head>
+               <meta charset="UTF-8">
+               <meta name="viewport" content="width=device-width, initial-scale=1.0">
+               <title>Password Reset</title>
+               <style>
+                 body {
+                   font-family: Arial, sans-serif;
+                   margin: 0;
+                   padding: 0;
+                   background-color: #f4f4f4;
+                 }
+             
+                 .container {
+                   max-width: 600px;
+                   margin: 20px auto;
+                   padding: 20px;
+                   background-color: #ffffff;
+                   border-radius: 5px;
+                   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                   font-size:15px;
+                   font-weight:500;
+                 }
+             
+                 h1 {
+                   color: #333333;
+                 }
+             
+                 p {
+                   color: #666666;
+                 }
+             
+                 .button {
+                   display: inline-block;
+                   padding: 12px 12px;
+                   background-color: #ff9999;
+                   color: #ffffff;
+                   text-decoration: none;
+                   border-radius: 15px; 
+                   font-size: 20px;
+                 }
+             
+                 .button:hover {
+                   background-color: #ff6666;
+                 }
+               </style>
+             </head>
+             
+             <body>
+               <div class="container">
+                 <h1>Password Reset</h1>
+                 <p>Hello,</p>
+                 <p>You have requested to reset your password. Click the link below to reset your password:</p>
+                 <p><a class="button" href="http://expense-tracker-application.s3-website-us-east-1.amazonaws.com/reset-password/${id}">Reset Password</a></p>
+                 <p>If you did not request a password reset, please ignore this email.</p>
+                 <p>Thank you,</p>
+                 <p>Expense Tracker pvt ltd</p>
+               </div>
+             </body>
              </html>`,
         },{transaction: t})
-
         await t.commit()
         return res.status(200).json({success:true,message:'Email sent successfully'})
 
@@ -56,7 +112,6 @@ exports.sendEmail = async (req,res,next)=>{
 }
 
 exports.resetPassword = async (req,res,next)=>{
-  console.log(req.body)
        const id = req.body.id
        const password = req.body.password
        let t;
