@@ -2,7 +2,7 @@ const {Op,fn,col} = require('sequelize')
 const Transaction = require('../Models/transaction')
 const moment = require('moment')
 const AWS = require('aws-sdk')
-
+const Sequelize = require('sequelize')
 const uploadToS3 = (data,file)=>{
       const BUCKET_NAME = process.env.AWS_BUCKET_NAME;
       const SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
@@ -63,8 +63,12 @@ exports.getReportByMonth = async (req,res,next)=>{
       const user = req.user;
       const currentDate = moment();
       const month = currentDate.month()+1;
+      console.log(month)
     try{
-         const data = await user.getTransactions({where : fn('MONTH', col('date')) === month,})  
+        const data = await user.getTransactions({
+            where: Sequelize.literal(`MONTH(date) = ${month}`),
+        });
+         console.log(data) 
          return res.status(200).json({success:true,data:data,message:'Monthly report fetched successfully'})  
     }
     catch(error){
